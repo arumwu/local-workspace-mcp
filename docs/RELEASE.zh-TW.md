@@ -2,7 +2,7 @@
 
 安裝完成後，程式會自動加入 ChatGPT 桌面版／Codex 的 MCP 設定，通常不用再自己填名稱和啟動指令。
 
-**第一次使用：先看「中文安裝指南.html」，再下載 `local-workspace-mcp-v0.1.1-alpha.1.zip`。**
+**第一次使用：先下載 [中文安裝指南（HTML）](https://github.com/arumwu/local-workspace-mcp/releases/download/v0.1.1-alpha.1/install-guide.zh-TW.html)，用瀏覽器開啟，再下載 `local-workspace-mcp-v0.1.1-alpha.1.zip`。**
 解壓縮後，準備必備工具，雙擊 `Install.command`。安裝後重新載入 MCP 或開啟新工作。
 
 [線上中文安裝教學](https://github.com/arumwu/local-workspace-mcp/blob/main/docs/README.zh-TW.md) · [English](https://github.com/arumwu/local-workspace-mcp/blob/main/docs/README.en.md)
