@@ -1,7 +1,7 @@
 # v0.1.1-alpha.1
 
 Install and automatically register Local Workspace MCP with the shared ChatGPT desktop/Codex configuration.
-Double-click Install.command for guided setup, or use the existing CLI. Reload MCP servers or open a new
+On macOS, double-click Install.command for guided setup, or use the existing CLI. Reload MCP servers or open a new
 task after installation; active apps are never restarted automatically.
 
 The installer backs up config.toml, preserves comments/unrelated settings, reuses custom server names,
@@ -16,3 +16,7 @@ SSH remain unverified. The earlier manual registration on the development Mac wa
 it was not modified by this update.
 
 Use the source ZIP for the complete installer; the wheel alone does not contain the Node engine/worker context.
+
+**Windows: users have reported successful testing.** The Windows version, native Windows versus WSL2
+environment, and tested features have not yet been provided. The maintainer has not independently
+reproduced the result, and this release does not include a native Windows installer.

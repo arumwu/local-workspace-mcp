@@ -21,7 +21,12 @@ Selected file contents/tool results go to your AI provider. SSH uses your own ho
 
 Requires Python 3.12+, [uv](https://docs.astral.sh/uv/), Git; full mode also requires Node.js 20.9+, npm and ripgrep.
 Docker is required for isolated document jobs. Existing Chrome/Chromium is required for `host_write_pdf`;
-no browser is downloaded automatically. Native Windows and WSL are not validated.
+no browser is downloaded automatically.
+
+**Windows: users have reported successful testing.** The Windows version, execution environment
+(native Windows or WSL2), and tested features have not yet been provided, and the maintainer has not
+independently reproduced the result. The installation instructions below target macOS/Linux;
+this release does not include a native Windows installer.
 
 ```sh
 git clone https://github.com/arumwu/local-workspace-mcp.git

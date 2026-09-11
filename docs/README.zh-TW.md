@@ -4,6 +4,9 @@
 
 適用版本：**v0.1.1-alpha.1**。主要對象：使用 Mac 與 ChatGPT 桌面版的人。
 
+**Windows 已有使用者回報測試成功。** 尚未取得 Windows 版本、原生 Windows 或 WSL2（Windows 裡的 Linux 環境）及測試功能範圍，維護者尚未重現驗證。
+本頁的 Homebrew 與雙擊 `Install.command` 步驟適用於 Mac；目前沒有原生 Windows 安裝器。
+
 安裝完成後，ChatGPT 可以透過這套工具讀取本機檔案、處理文件，或在你啟用完整模式後執行程式。
 這份教學走本機連線，不需要公開網址，也不需要另外租雲端主機。
 

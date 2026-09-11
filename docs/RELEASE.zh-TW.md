@@ -3,7 +3,7 @@
 安裝完成後，程式會自動加入 ChatGPT 桌面版／Codex 的 MCP 設定，通常不用再自己填名稱和啟動指令。
 
 **第一次使用：先下載 [中文安裝指南（HTML）](https://github.com/arumwu/local-workspace-mcp/releases/download/v0.1.1-alpha.1/install-guide.zh-TW.html)，用瀏覽器開啟，再下載 `local-workspace-mcp-v0.1.1-alpha.1.zip`。**
-解壓縮後，準備必備工具，雙擊 `Install.command`。安裝後重新載入 MCP 或開啟新工作。
+Mac：解壓縮後，準備必備工具，雙擊 `Install.command`。安裝後重新載入 MCP 或開啟新工作。
 
 [線上中文安裝教學](https://github.com/arumwu/local-workspace-mcp/blob/main/docs/README.zh-TW.md) · [English](https://github.com/arumwu/local-workspace-mcp/blob/main/docs/README.en.md)
 
@@ -18,3 +18,5 @@ macOS、Ubuntu 與文件容器測試已通過；也已實測獨立安裝、自�
 目前仍是 **alpha 測試版**，需要 Python、uv 等必備工具；不是包含所有工具的 `.app` 或 `.pkg`。
 完整模式可修改檔案、執行命令及連網，權限等同目前使用者。
 真正的 ChatGPT 對話呼叫與實體多機驗收仍待完成。
+
+**Windows：已有使用者回報測試成功。** Windows 版本、原生 Windows 或 WSL2 及測試範圍尚未提供，維護者尚未重現驗證；本版沒有原生 Windows 安裝器。
