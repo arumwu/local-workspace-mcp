@@ -2,8 +2,13 @@
 
 ## Local desktop
 
-In an MCP-capable local desktop mode, add the installed `launch.sh` as a STDIO server command.
-Arguments are empty. The client starts/stops the process; there is no local listening port.
+The installer now registers `launch.sh` automatically in the documented shared ChatGPT/Codex TOML config.
+Reload MCP servers or start a new task after installing. It does not restart the app automatically.
+The original file is backed up before writing; comments/other servers remain intact. A matching launcher
+under another name is reused, including existing arguments and enabled/disabled preference.
+To skip registration use `--no-register`; to target a specific config use `--client-config /path/config.toml`.
+For manual setup in another compatible client, use `launch.sh` as a STDIO command with empty arguments.
+The client starts/stops the process; there is no local listening port.
 Do not assume ordinary ChatGPT chat mode can use local tools because a separate desktop Work/Codex mode can.
 Check that your actual app/mode exposes a local MCP setting and that `list_directory` really returns your files.
 This project's actual ChatGPT UI acceptance remains pending; an official SDK test is not a substitute.

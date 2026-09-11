@@ -39,3 +39,14 @@ This is not an exhaustive security audit, performance benchmark or upstream conf
 No public endpoint, third-party account or remote daemon was provisioned. Use CONNECT.md for real-client
 acceptance. The project is installed and protocol-tested, but these outstanding checks prevent calling the
 entire ChatGPT Work-equivalent experience complete.
+
+## Installer update — v0.1.1-alpha.1
+
+The owner completed registration manually. A read-only check confirmed the launcher was configured and
+enabled; the updater was not run against the owner's real client settings.
+Five new registration tests cover preservation/backups, custom names and disabled entries, malformed data,
+conflicts, intentional config symlinks, first installation and inline tables.
+An independent source copy was installed against a synthetic client config, which retained its previous
+settings. The automatically registered command was then launched through the official MCP SDK and a
+host_write_file call wrote and verified a test file. This verifies installation/configuration/transport,
+not an actual model-initiated ChatGPT conversation. The Docker worker is unchanged from the previous release.

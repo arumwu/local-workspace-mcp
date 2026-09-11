@@ -1,12 +1,18 @@
-# v0.1.0-alpha.1
+# v0.1.1-alpha.1
 
-Initial source release: 25 Desktop Commander tools with pinned privacy adaptations, Docker document worker,
-owner-configured named SSH/stdio devices, local feedback and OAuth-protected optional HTTP with expiring downloads.
+Install and automatically register Local Workspace MCP with the shared ChatGPT desktop/Codex configuration.
+Double-click Install.command for guided setup, or use the existing CLI. Reload MCP servers or open a new
+task after installation; active apps are never restarted automatically.
 
-macOS source installer and English/Traditional Chinese documentation included. Local installation exposes
-41 tools in full mode. Tests cover real stdio, Docker document generation/rendering/recalculation and OAuth.
+The installer backs up config.toml, preserves comments/unrelated settings, reuses custom server names,
+retains disabled entries and refuses conflicts. --no-register and --client-config provide explicit control.
+Client registration tests cover new files, inline tables, comments/backups, duplicates, malformed input,
+conflicts and config symlinks. An independent source installation registered a launcher and successfully
+performed an actual host-tool file write from that configuration.
 
-Known boundaries: actual ChatGPT desktop/web acceptance and physical multi-Mac SSH remain unverified.
-No signed app/pkg or hosted relay. Full mode is arbitrary OS user access, not a sandbox.
-Use the repository ZIP for the complete installer. The Python wheel alone does not contain the optional
-Node engine or Docker build context; full installation requires the source checkout.
+All 25 upstream tools and document functionality remain available. No hosted relay or signed app/pkg.
+Full mode grants OS user-account access. Actual ChatGPT conversation tool execution and physical multi-Mac
+SSH remain unverified. The earlier manual registration on the development Mac was detected read-only;
+it was not modified by this update.
+
+Use the source ZIP for the complete installer; the wheel alone does not contain the Node engine/worker context.

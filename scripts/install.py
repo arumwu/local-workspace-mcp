@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install this checkout without global packages or modifying client settings."""
+"""Install this checkout and register its server with ChatGPT desktop/Codex."""
 
 import argparse
 import json
@@ -11,13 +11,29 @@ from pathlib import Path
 
 repo = Path(__file__).resolve().parents[1]
 p = argparse.ArgumentParser(description=__doc__)
-p.add_argument("--workspace", required=True, type=Path)
-p.add_argument("--state", required=True, type=Path)
+p.add_argument("--workspace", type=Path)
+p.add_argument("--state", type=Path)
 p.add_argument("--mode", choices=["documents", "full"], default="documents")
 p.add_argument("--skip-worker", action="store_true", help="Skip Docker document support")
+p.add_argument("--no-register", action="store_true", help="Install only; do not register with ChatGPT/Codex")
+p.add_argument("--client-config", type=Path, help="Override the documented shared config.toml location")
+p.add_argument("--server-name", default="local-workspace", help="Name used for a new client entry")
+p.add_argument("--interactive", action="store_true", help="Guided installation for double-click launch")
 a = p.parse_args()
-workspace = a.workspace.resolve()
-state = a.state.resolve()
+if a.interactive:
+    print("Local Workspace MCP：安裝本機工具並自動加入 ChatGPT/Codex；既有設定會先備份。")
+    if a.workspace is None:
+        a.workspace = Path(input(f"工作資料夾 [{repo / 'workspace'}]: ").strip() or str(repo / "workspace"))
+    if a.state is None:
+        a.state = Path(
+            input(f"私有設定資料夾 [{repo / '.local/state'}]: ").strip() or str(repo / ".local/state")
+        )
+    if input("啟用完整電腦工具（可改檔案、執行命令與連網）？[y/N]: ").strip().lower() == "y":
+        a.mode = "full"
+if a.workspace is None or a.state is None:
+    p.error("Supply --workspace and --state, or use --interactive.")
+workspace = a.workspace.expanduser().resolve()
+state = a.state.expanduser().resolve()
 if state.is_relative_to(workspace) or workspace == Path.home() or workspace == Path("/"):
     p.error("Choose a dedicated workspace and separate private state directory.")
 for tool in (
@@ -76,9 +92,24 @@ fragment.write_text(
     json.dumps({"mcpServers": {"local-workspace": {"command": str(launch), "args": []}}}, indent=2) + "\n"
 )
 fragment.chmod(0o600)
+if not a.no_register:
+    registration = [
+        str(repo / ".venv/bin/python"),
+        "-m",
+        "local_workspace_mcp.client_setup",
+        "--launch",
+        str(launch),
+        "--server-name",
+        a.server_name,
+        "--receipt",
+        str(state / "client-registration.json"),
+    ]
+    if a.client_config:
+        registration += ["--config", str(a.client_config.expanduser().resolve())]
+    subprocess.run(registration, check=True)
 print(f"Installed. STDIO command: {launch}\nClient configuration fragment: {fragment}")
 print(
-    "Existing client settings were preserved. FULL mode has user-account permissions."
+    "Other client settings were preserved. FULL mode has user-account permissions."
     if a.mode == "full"
     else "Document mode runs Python inside Docker with read-only inputs."
 )

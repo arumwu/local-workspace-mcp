@@ -31,3 +31,9 @@ still use the network; this is not an outbound firewall. Browser auto-download i
 
 Known scope: no automatic file versioning, signed distribution, credential vault, durable OAuth database,
 enterprise policy enforcement or browser/desktop clicking. Depend on OS/client controls for these.
+
+Client registration is now an explicit part of installation (opt out with --no-register). It updates only
+one documented MCP table, backs up the original with permissions 0600, validates unrelated settings are
+unchanged, checks for concurrent changes and atomically replaces the target. Intentional config symlinks
+are followed, not replaced. Existing matching or disabled entries are preserved; conflicting names fail.
+No approval policy or sandbox setting is changed. The installer never restarts the client.

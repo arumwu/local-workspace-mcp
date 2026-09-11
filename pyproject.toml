@@ -4,12 +4,15 @@ build-backend = "hatchling.build"
 
 [project]
 name = "local-workspace-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Self-hosted MCP for local documents, files, terminal processes and named computers"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
-dependencies = ["mcp==1.30.0"]
+dependencies = [
+    "mcp==1.30.0",
+    "tomlkit==0.15.1",
+]
 
 [project.scripts]
 local-workspace-mcp = "local_workspace_mcp.cli:main"

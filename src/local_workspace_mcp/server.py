@@ -317,7 +317,7 @@ def create_server(
 
         @mcp.custom_route("/health", methods=["GET"])
         async def health(request):
-            return JSONResponse({"status": "ok", "version": "0.1.0"})
+            return JSONResponse({"status": "ok", "version": "0.1.1"})
 
     return mcp, workspace, provider
 

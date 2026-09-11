@@ -32,12 +32,19 @@ cd local-workspace-mcp
 
 Choose existing storage appropriate to your computer. Keep private state outside the workspace.
 Use `--mode documents` for isolated document work, or `--skip-worker` when Docker is not needed.
-The installer installs only checkout-local dependencies and builds the worker. It backs up its own
-launcher/config fragment before replacing them and does not modify any MCP client settings.
+The installer installs checkout-local dependencies, builds the worker, and **automatically registers the
+launcher in the documented shared ChatGPT desktop/Codex `config.toml`**. Existing configuration is backed
+up before writing; other settings/comments are preserved. Reinstalling reuses an existing entry, including
+custom names, arguments or disabled status. A conflicting server name is refused without overwriting it.
+Use `--no-register` to install without client changes, or `--client-config /path/config.toml` for an explicit
+configuration location. Otherwise it honors `CODEX_HOME`, falling back to `~/.codex/config.toml`.
+Double-click `Install.command` for a guided setup; it asks for storage folders and explicit full-mode access.
 This is a source installer, **not a signed macOS app/pkg**. Missing prerequisites are reported, not auto-installed.
 
-Add the generated `private-state/launch.sh` as a **STDIO command** in a compatible local MCP client.
-The generated `mcp-server.json` is a configuration fragment, not a file to overwrite existing settings with.
+After installation, reload MCP servers in ChatGPT desktop or start a new task. The installer does not
+restart an active app. The generated `client-registration.json` records the server name and backup path.
+For other clients (or `--no-register`), add `private-state/launch.sh` as a STDIO command. `mcp-server.json`
+is a configuration fragment, not a replacement for existing settings.
 No listening port, public URL, or API key is required for this local transport.
 ChatGPT web cannot directly contact `127.0.0.1`; see [connection options and account limits](docs/CONNECT.md).
 

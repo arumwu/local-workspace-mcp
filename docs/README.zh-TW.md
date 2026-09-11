@@ -16,8 +16,12 @@ cd local-workspace-mcp
 ```
 
 路徑換成自己的位置；私有設定不能放進工作資料夾。
-安裝程式不會安裝全域工具、不會覆寫 ChatGPT 設定；不是簽章版 `.app` 或 `.pkg`。
-安裝後，把產生的 `launch.sh` 加進支援本機 MCP 的用戶端，類型選 STDIO，參數留空。
+也可以直接雙擊 `Install.command`，依提示選擇資料夾及模式。
+安裝器會自動把 MCP 加入 ChatGPT 桌面版／Codex 的共用設定，先備份並保留其他內容。
+重裝不會重複新增；如果你原本自行取了名字，也會沿用。安裝後重新載入 MCP 或開新工作即可。
+不會擅自重啟你正在使用的 app，不會安裝全域工具；目前仍不是簽章版 `.app` 或 `.pkg`。
+使用 `--no-register` 可跳過自動設定；`--client-config /路徑/config.toml` 可指定設定檔。
+設定位置與備份位置會寫入私有設定資料夾的 `client-registration.json`。
 
 ## 權限
 

@@ -1,6 +1,6 @@
 {
   "name": "local-workspace-mcp-engine",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Pinned optional Desktop Commander engine for full local computer mode",
   "license": "MIT",
