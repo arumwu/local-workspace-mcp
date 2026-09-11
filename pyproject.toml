@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "local-workspace-mcp"
+version = "0.1.0"
+description = "Self-hosted MCP for local documents, files, terminal processes and named computers"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = ["mcp==1.30.0"]
+
+[project.scripts]
+local-workspace-mcp = "local_workspace_mcp.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "ruff>=0.12,<1", "pip-audit>=2,<3"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

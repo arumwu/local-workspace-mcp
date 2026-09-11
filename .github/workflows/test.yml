@@ -1,0 +1,41 @@
+name: Test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Ensure ripgrep
+        shell: bash
+        run: |
+          if ! command -v rg >/dev/null; then
+            if [ "$RUNNER_OS" = "macOS" ]; then brew install ripgrep; else sudo apt-get update && sudo apt-get install -y ripgrep; fi
+          fi
+      - run: uv sync --frozen
+      - run: npm ci --ignore-scripts
+      - run: uv run python scripts/patch_engine.py
+      - run: uv run ruff check src tests scripts
+      - run: uv run pytest
+      - run: npm audit --omit=dev
+      - run: uv run pip-audit --skip-editable
+  documents:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+      - run: uv sync --frozen
+      - run: docker build -t local-workspace-mcp-worker:0.1.0 worker
+      - run: LWMCP_DOCKER_TESTS=1 uv run pytest tests/test_worker.py
