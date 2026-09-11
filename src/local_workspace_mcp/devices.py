@@ -64,7 +64,15 @@ class Devices:
                     entry = self.entries[name]
                     try:
                         async with stdio_client(
-                            StdioServerParameters(command=entry["command"], args=entry.get("args", []))
+                            StdioServerParameters(
+                                command=entry["command"],
+                                args=entry.get("args", []),
+                                env={
+                                    k: os.environ[k]
+                                    for k in ("PATH", "HOME", "SHELL", "LANG", "SSH_AUTH_SOCK")
+                                    if k in os.environ
+                                },
+                            )
                         ) as streams:
                             async with ClientSession(*streams) as session:
                                 await session.initialize()
