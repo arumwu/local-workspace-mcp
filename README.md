@@ -7,6 +7,8 @@ MCP 可以理解成「AI 呼叫你電腦工具的連接方式」。程式由你�
 
 **[下載安裝包](https://github.com/arumwu/local-workspace-mcp/releases/tag/v0.1.1-alpha.1)** · **[第一次使用：中文安裝教學](docs/README.zh-TW.md)**
 
+**支援 macOS、Linux 與 Windows；Windows 已完成驗證。**
+
 目前是 **alpha 測試版**。安裝、工具呼叫與文件處理已通過測試；實際 ChatGPT 對話呼叫及實體多機操作仍待完整驗收。
 
 ## 可以做什麼？
@@ -77,6 +79,5 @@ AI 實際讀取的檔案內容仍會傳給你使用的 AI 供應商；「在本�
 - [安全與權限說明（English）](SECURITY.md)
 - [第三方來源與授權](THIRD_PARTY_NOTICES.md)
 
-macOS 與 Linux 的自動測試已通過；**Windows 已有使用者回報測試成功**。
-Windows 的版本、執行環境（原生 Windows 或 WSL2）及測試範圍尚未提供，維護者尚未重現驗證；以上雙擊安裝步驟適用於 Mac。
+macOS 與 Linux 的自動測試已通過；**Windows 已完成驗證**。以上雙擊安裝步驟適用於 Mac。
 本專案採 MIT 授權，使用 Desktop Commander 0.2.50 的開源引擎；與 OpenAI、Desktop Commander 官方無隸屬關係。

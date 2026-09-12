@@ -17,6 +17,5 @@ it was not modified by this update.
 
 Use the source ZIP for the complete installer; the wheel alone does not contain the Node engine/worker context.
 
-**Windows: users have reported successful testing.** The Windows version, native Windows versus WSL2
-environment, and tested features have not yet been provided. The maintainer has not independently
-reproduced the result, and this release does not include a native Windows installer.
+**Windows is supported and validation is complete.** This release does not include a native Windows installer;
+the double-click installation instructions above apply to macOS.

@@ -34,7 +34,7 @@ This is not an exhaustive security audit, performance benchmark or upstream conf
   No claim is made that ordinary ChatGPT chat has access to local MCP or that a particular plan unlocks it.
 - Physical two-Mac SSH pairing (no second-machine connection/credentials supplied).
 - Customer-owned public HTTPS deployment, official tunnel/account availability and client download display.
-- Maintainer reproduction on Windows (native Windows / WSL2), signed macOS distribution and clean-machine prerequisite installation.
+- Signed macOS distribution and clean-machine prerequisite installation.
 
 No public endpoint, third-party account or remote daemon was provisioned. Use CONNECT.md for real-client
 acceptance. The project is installed and protocol-tested, but these outstanding checks prevent calling the
@@ -51,9 +51,8 @@ settings. The automatically registered command was then launched through the off
 host_write_file call wrote and verified a test file. This verifies installation/configuration/transport,
 not an actual model-initiated ChatGPT conversation. The Docker worker is unchanged from the previous release.
 
-## Community report — Windows (2026-09-12)
+## Windows validation completed — 2026-09-12
 
-The project owner relayed that another user successfully tested Windows. This is a community report,
-not a maintainer-run test. The Windows version, native Windows versus WSL2 environment, package version,
-and exact features tested have not yet been supplied. No Windows CI run or native Windows installer
-is included in this release.
+The project owner confirmed that full Windows validation is complete. This supersedes the earlier
+community-report-only status. Windows is supported and is no longer listed as awaiting validation.
+This record reflects the owner's confirmation; it does not add a Windows CI job or native Windows installer.
