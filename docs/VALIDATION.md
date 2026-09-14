@@ -35,6 +35,7 @@ This is not an exhaustive security audit, performance benchmark or upstream conf
 - Physical two-Mac SSH pairing (no second-machine connection/credentials supplied).
 - Customer-owned public HTTPS deployment, official tunnel/account availability and client download display.
 - Signed macOS distribution and clean-machine prerequisite installation.
+- Native Windows. Execution is blocked by POSIX-only code paths; see "Windows status" below.
 
 No public endpoint, third-party account or remote daemon was provisioned. Use CONNECT.md for real-client
 acceptance. The project is installed and protocol-tested, but these outstanding checks prevent calling the
@@ -51,8 +52,20 @@ settings. The automatically registered command was then launched through the off
 host_write_file call wrote and verified a test file. This verifies installation/configuration/transport,
 not an actual model-initiated ChatGPT conversation. The Docker worker is unchanged from the previous release.
 
-## Windows validation completed — 2026-09-12
+## Windows status — corrected 2026-09-14
 
-The project owner confirmed that full Windows validation is complete. This supersedes the earlier
-community-report-only status. Windows is supported and is no longer listed as awaiting validation.
-This record reflects the owner's confirmation; it does not add a Windows CI job or native Windows installer.
+A 2026-09-12 note recorded the owner's confirmation that Windows validation was complete. That note did
+not add code, tests, a Windows CI job or a native installer, and native Windows execution is currently
+blocked by POSIX-only code paths:
+
+- `Workspace` refuses non-POSIX systems: "Use Linux Docker on Windows; native Windows is not supported."
+- `client_setup.py` imports `fcntl`, which does not exist on Windows.
+- `runner.py` passes `os.getuid()` / `os.getgid()` to Docker.
+- `cli.py`, `server.py` and `workspace.py` use `os.O_NOFOLLOW`, `os.O_DIRECTORY` and `dir_fd`.
+- `scripts/install.py` uses `.venv/bin/...` paths and writes a `#!/bin/sh` launcher; `Install.command` is POSIX sh.
+- CI runs only on `ubuntu-latest` and `macos-latest`.
+
+On Windows 11 with CPython 3.14.2, `fcntl` is unavailable, `os.O_NOFOLLOW`, `os.O_DIRECTORY` and
+`os.getuid` are absent, and `os.open` does not support `dir_fd`. Native Windows is therefore listed as
+unsupported and unverified. Linux environments on Windows (for example WSL2 or a container) have not
+been validated either.
