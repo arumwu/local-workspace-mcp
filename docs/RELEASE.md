@@ -17,5 +17,6 @@ it was not modified by this update.
 
 Use the source ZIP for the complete installer; the wheel alone does not contain the Node engine/worker context.
 
-**Windows is supported and validation is complete.** This release does not include a native Windows installer;
-the double-click installation instructions above apply to macOS.
+**Correction:** the earlier release note stated that Windows support had been validated. Native Windows is not
+currently supported or validated because the implementation depends on Unix-specific APIs. This release does
+not include a native Windows installer; the double-click installation instructions above apply to macOS.

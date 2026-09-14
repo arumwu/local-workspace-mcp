@@ -23,8 +23,9 @@ Requires Python 3.12+, [uv](https://docs.astral.sh/uv/), Git; full mode also req
 Docker is required for isolated document jobs. Existing Chrome/Chromium is required for `host_write_pdf`;
 no browser is downloaded automatically.
 
-**Windows is supported and validation is complete.** The installation instructions below target
-macOS/Linux; this release does not include a native Windows installer.
+**Native Windows is not currently supported or validated.** The code relies on POSIX-only APIs such as
+`fcntl`, `os.getuid`, `os.O_NOFOLLOW` and `dir_fd`, and there is no Windows CI job or native Windows installer.
+The installation instructions below target macOS/Linux.
 
 ```sh
 git clone https://github.com/arumwu/local-workspace-mcp.git

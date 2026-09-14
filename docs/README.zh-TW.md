@@ -4,7 +4,7 @@
 
 適用版本：**v0.1.1-alpha.1**。主要對象：使用 Mac 與 ChatGPT 桌面版的人。
 
-**支援 Windows，已完成驗證。**
+**原生 Windows 目前不支援，也尚未驗證。** 程式使用 `fcntl`、`os.getuid` 等 Unix 專用 API，也沒有 Windows CI。
 本頁的 Homebrew 與雙擊 `Install.command` 步驟適用於 Mac；目前沒有原生 Windows 安裝器。
 
 安裝完成後，ChatGPT 可以透過這套工具讀取本機檔案、處理文件，或在你啟用完整模式後執行程式。
