@@ -1,6 +1,23 @@
-# Validation record — 2026-09-11
+# Validation record — updated 2026-09-17
 
-Release status: **alpha**. Actual ChatGPT app acceptance is incomplete.
+Release status: **alpha**. Ordinary ChatGPT web Python calls verified; native App acceptance incomplete.
+
+## Ordinary ChatGPT chat — 2026-09-17
+
+- Personal ChatGPT account, ordinary Chat interface, model 6 Pro; not Codex or Work.
+- Official tunnel-client v0.0.14 on macOS arm64, private workspace-associated STDIO tunnel.
+- Plugin discovery succeeded with 41 tools after removing upstream UI template metadata whose resources
+  are not exposed by this tool bridge. Tool functionality and non-UI metadata are preserved.
+- Actual get_workflow_instructions and run_python calls returned CHATGPT_TUNNEL_OK_0917, exit code 0.
+- After tunnel restart, actual run_python returned CHATGPT_RESTART_OK_0917, exit code 0.
+- After removing the local Codex MCP registration, ordinary ChatGPT returned CHATGPT_ONLY_OK_0917, exit code 0.
+- macOS background-item records identify the named launcher app rather than sh.
+- Local suite: 31 passed, 3 optional Docker cases skipped; startup/installer-default tests: 8 passed.
+  Ruff and git diff --check passed.
+- These tests used print only and did not read private files or generate documents.
+- macOS login startup was exercised by launchctl bootstrap and restart; a physical reboot was not performed.
+- No private key, workspace/tunnel ID, personal chat URL or machine-specific configuration is published.
+
 
 ## Verified locally on macOS
 
@@ -29,17 +46,17 @@ This is not an exhaustive security audit, performance benchmark or upstream conf
 
 ## Still unverified / blocked
 
-- **Actual ChatGPT desktop/web end-to-end acceptance.** The available computer-control tool refused the
+- **Native ChatGPT App and complete document-workflow acceptance.** The available computer-control tool refused the
   resolved app with `Computer Use is not allowed to use app com.openai.codex`; that restriction was respected.
-  No claim is made that ordinary ChatGPT chat has access to local MCP or that a particular plan unlocks it.
+  Ordinary web chat through the private tunnel is verified above; native App and all-plan support are not.
 - Physical two-Mac SSH pairing (no second-machine connection/credentials supplied).
-- Customer-owned public HTTPS deployment, official tunnel/account availability and client download display.
+- Customer-owned public HTTPS deployment, tunnel availability on other accounts and client download display.
 - Signed macOS distribution and clean-machine prerequisite installation.
 - Native Windows. Execution is blocked by POSIX-only code paths; see "Windows status" below.
 
-No public endpoint, third-party account or remote daemon was provisioned. Use CONNECT.md for real-client
-acceptance. The project is installed and protocol-tested, but these outstanding checks prevent calling the
-entire ChatGPT Work-equivalent experience complete.
+The 2026-09-11 checks below did not provision a public endpoint. The 2026-09-17 follow-up provisioned a
+private official tunnel and a local background process with owner authorization. Use CHATGPT.en.md for
+ordinary-chat setup. The project does not claim equivalence to ChatGPT Work.
 
 ## Installer update — v0.1.1-alpha.1
 

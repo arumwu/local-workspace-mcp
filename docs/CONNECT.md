@@ -1,8 +1,11 @@
-# Connect locally or through your own transport
+# Connection options
+
+**Primary path: [ordinary ChatGPT conversations via private tunnel](CHATGPT.en.md) ([中文](CHATGPT.md)).**
+Real web conversation Python calls were verified on 2026-09-17; native App acceptance is separate.
 
 ## Local desktop
 
-The installer now registers `launch.sh` automatically in the documented shared ChatGPT/Codex TOML config.
+With explicit `--register-local-client`, the installer registers `launch.sh` in the documented shared ChatGPT/Codex TOML config.
 Reload MCP servers or start a new task after installing. It does not restart the app automatically.
 The original file is backed up before writing; comments/other servers remain intact. A matching launcher
 under another name is reused, including existing arguments and enabled/disabled preference.
@@ -11,7 +14,7 @@ For manual setup in another compatible client, use `launch.sh` as a STDIO comman
 The client starts/stops the process; there is no local listening port.
 Do not assume ordinary ChatGPT chat mode can use local tools because a separate desktop Work/Codex mode can.
 Check that your actual app/mode exposes a local MCP setting and that `list_directory` really returns your files.
-This project's actual ChatGPT UI acceptance remains pending; an official SDK test is not a substitute.
+Local STDIO UI acceptance is separate from the verified ordinary web conversation through a tunnel.
 
 Current official references (checked 2026-09-11):
 - [ChatGPT MCP documentation](https://learn.chatgpt.com/zh-Hant/docs/extend/mcp)
@@ -26,7 +29,8 @@ Cloud ChatGPT cannot directly reach your computer's localhost. Choose either:
    This does not require renting a server, but is not key-free and availability/cost must be checked on your account.
 2. Your own HTTPS origin/reverse proxy forwarding to this server's HTTP OAuth transport.
 
-The project does not provision either connection or request/store an OpenAI key.
+The base installer does not provision either account connection or store an OpenAI key.
+Follow the primary tunnel guide to configure your own private runtime key; do not commit it.
 Do not expose the STDIO engine as anonymous HTTP.
 
 For a reverse proxy on the same machine, forward **all paths**, not just `/mcp`:

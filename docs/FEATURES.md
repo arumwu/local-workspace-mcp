@@ -24,5 +24,5 @@ automatic browser download, or document-content logs. Feedback is saved locally.
 SSH/stdio rather than a vendor login portal. No browser/desktop clicking or extra AI credits.
 
 Limits: full upstream feature behavior is inherited and not exhaustively tested. macOS is tested locally;
-Linux CI is configured; native Windows is unsupported. Actual ChatGPT client acceptance and physical
-multi-Mac SSH checks remain outstanding. This is an alpha, not a completed ChatGPT Work clone.
+Linux CI is configured; native Windows is unsupported. Native ChatGPT client acceptance and physical
+multi-Mac SSH checks remain outstanding. The primary target is ordinary ChatGPT conversations. This remains alpha; see the dated validation record.

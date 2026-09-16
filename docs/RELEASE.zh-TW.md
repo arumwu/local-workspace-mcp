@@ -1,5 +1,6 @@
 # v0.1.1-alpha.1｜自動設定 MCP
 
+> Historical release notes for v0.1.1-alpha.1. For current ChatGPT-first setup, see [the current guide](CHATGPT.md).
 安裝完成後，程式會自動加入 ChatGPT 桌面版／Codex 的 MCP 設定，通常不用再自己填名稱和啟動指令。
 
 **第一次使用：先下載 [中文安裝指南（HTML）](https://github.com/arumwu/local-workspace-mcp/releases/download/v0.1.1-alpha.1/install-guide.zh-TW.html)，用瀏覽器開啟，再下載 `local-workspace-mcp-v0.1.1-alpha.1.zip`。**

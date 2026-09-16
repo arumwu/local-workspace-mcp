@@ -1,5 +1,6 @@
 # v0.1.1-alpha.1
 
+> Historical release notes for v0.1.1-alpha.1. For current ChatGPT-first setup, see [the current guide](CHATGPT.md).
 Install and automatically register Local Workspace MCP with the shared ChatGPT desktop/Codex configuration.
 On macOS, double-click Install.command for guided setup, or use the existing CLI. Reload MCP servers or open a new
 task after installation; active apps are never restarted automatically.

@@ -2,29 +2,21 @@
 
 [專案首頁](https://github.com/arumwu/local-workspace-mcp) · [English](https://github.com/arumwu/local-workspace-mcp/blob/main/docs/README.en.md)
 
-適用版本：**v0.1.1-alpha.1**。主要對象：使用 Mac 與 ChatGPT 桌面版的人。
+適用版本：main 最新原始碼。主要用途：**一般 ChatGPT 對話操作本機工具**。
 
-**原生 Windows 目前不支援，也尚未驗證。** 程式使用 `fcntl`、`os.getuid` 等 Unix 專用 API，也沒有 Windows CI。
-本頁的 Homebrew 與雙擊 `Install.command` 步驟適用於 Mac；目前沒有原生 Windows 安裝器。
+**原生 Windows 目前不支援，也尚未驗證。** 程式使用 Unix 專用 API；本頁安裝步驟適用於 Mac。
+本頁負責本機工具安裝；完成後接著照[ChatGPT 私人通道教學](CHATGPT.md)連線。
 
-安裝完成後，ChatGPT 可以透過這套工具讀取本機檔案、處理文件，或在你啟用完整模式後執行程式。
-這份教學走本機連線，不需要公開網址，也不需要另外租雲端主機。
+## 1. 先確認完成條件
 
-## 1. 先確認你用的是哪個介面
-
-打開 ChatGPT 桌面版的「設定 → MCP 伺服器」。
-如果新增伺服器時可以選「標準輸入／輸出」，就是本教學使用的連線方式。英文名稱是 **STDIO**。
-
-如果只有填網址的欄位，或你正在使用瀏覽器裡的 ChatGPT，先看[進階連線說明](https://github.com/arumwu/local-workspace-mcp/blob/main/docs/CONNECT.md)。不要把 `127.0.0.1` 當成網頁版可以直接使用的網址。
+要在新的普通 ChatGPT「對話」真正呼叫工具成功，才算接通。
+不要因為本機 MCP 列表或 Codex／Work 顯示已安裝，就省略帳戶外掛設定。
+一般網頁對話已完成 Python 呼叫驗證；本機 App 仍需獨立驗證。
 
 ## 2. 下載哪個檔案？
 
-打開[版本下載頁](https://github.com/arumwu/local-workspace-mcp/releases/tag/v0.1.1-alpha.1)，找到 **Assets**（附件）。
-
-下載：**`local-workspace-mcp-v0.1.1-alpha.1.zip`**。
-
-`.whl` 是給熟悉 Python 套件的人使用，單靠它不包含完整安裝器、Node 引擎與文件容器。
-`SHA256SUMS-v0.1.1-alpha.1.txt` 是核對下載檔案的檢查碼，一般使用者不需要打開它來安裝。
+下載 [main 最新原始碼 ZIP](https://github.com/arumwu/local-workspace-mcp/archive/refs/heads/main.zip)。
+舊版 v0.1.1-alpha.1 發行包不含這次修正。wheel 不含完整安裝器、Node 引擎與文件容器。
 
 解壓縮後，保留整個 `local-workspace-mcp` 資料夾。先移到準備長期保留的位置，再開始安裝。
 不要裝好後只留下 `Install.command`，也不要把整個資料夾當作下載暫存刪掉。
@@ -89,37 +81,17 @@ Docker Desktop 請依[官方 Mac 安裝說明](https://docs.docker.com/desktop/s
 第一次執行會下載套件並建立文件環境，需要網路。請等到看到「安裝完成」再關閉視窗。
 後續文件工作的隔離環境本身沒有網路；完整模式的本機命令則可以連網。
 
-## 5. 安裝器會幫你設定什麼？
+## 5. 安裝完成後接上 ChatGPT
 
-安裝器會把啟動器加入 ChatGPT 桌面版／Codex 共用的 MCP 設定，通常不用自己填名稱或指令。
-[OpenAI 官方說明](https://learn.chatgpt.com/zh-Hant/docs/extend/mcp)確認同一部主機上的桌面版與 Codex 共用這份設定。
+本機工具安裝器產生私有設定資料夾內的 `launch.sh`。
+預設不再修改 Codex／本機 STDIO 設定；請繼續[官方私人通道教學](CHATGPT.md)，
+完成通道、金鑰、ChatGPT 外掛連線及 Python 真實呼叫測試。
 
-它會：
+## 6. 回到一般 ChatGPT 對話使用
 
-- 寫入前備份原本的設定檔，保留其他 MCP、註解與設定。
-- 重裝時沿用已經存在的相同啟動器，保留你自訂的名稱與引數。
-- 如果原先是停用狀態，保留停用；如果同名項目指向別的程式，就停止，不覆蓋。
-- 把登錄名稱、設定檔與備份位置記錄在私有設定資料夾的 `client-registration.json`。
-
-安裝器不會重新啟動你正在使用的 ChatGPT，也不會改變你的其他權限規則。
-
-## 6. 回到 ChatGPT 開始使用
-
-回到「設定 → MCP 伺服器」，找 `local-workspace`，或你先前自己取的名稱。
-確認它已啟用，再重新載入 MCP 伺服器，或開啟一個新的工作。
-
-若剛建立的項目沒有立即出現，先重新載入設定。不要急著手動新增第二個一樣的伺服器。
-
-可以先放一個不重要的 CSV 到工作資料夾，然後對 ChatGPT 說：
-
-> 請列出工作資料夾裡的檔案，再讀取這份 CSV。先告訴我欄位和總筆數。
-
-確認讀到正確資料後，再試：
-
-> 請做成一份 Excel 報表和長條圖，核對總額，並告訴我檔案存在哪裡。
-
-如果 ChatGPT 說找不到工具，請確認目前使用的模式能使用本機 MCP，以及伺服器已連線。
-看到設定項目不等於已完成實際對話驗收；要真的讀到檔案、產出文件才算。
+新的普通「對話」中提及或選取 `Local Workspace MCP`，先做教學中的無檔案 Python 測試。
+再放一份測試 CSV 到工作資料夾，請它核對欄位、總筆數與總額，產出 Excel 報表。
+本機 App 也要獨立測試；不要把網頁版的成功當成本機 App 已驗收。
 
 ## 7. 檔案放在哪裡？
 
@@ -138,7 +110,7 @@ Docker Desktop 請依[官方 Mac 安裝說明](https://docs.docker.com/desktop/s
 | `Cannot connect to the Docker daemon` | Docker 還沒啟動。開啟 Docker Desktop，等它開始運作後再試。 |
 | `Client registration stopped` | 設定檔格式或名稱有衝突。原設定會保留；看後面的錯誤內容，不要刪整份設定。 |
 | `Permission denied` | 檢查資料夾是否可寫，以及下載腳本是否有執行權限；不要先改整顆磁碟的權限。 |
-| 安裝完找不到 MCP | 重新載入 MCP 伺服器，確認目前是支援本機 MCP 的桌面模式；檢查 `client-registration.json` 記錄的設定位置。 |
+| 安裝完找不到 MCP | 依通道教學確認 `/readyz`、ChatGPT 外掛與工作區，開新普通對話重測。 |
 | 移動程式資料夾後不能用 | 啟動器仍記住原路徑。把資料夾移回原位，或移除舊的 MCP 項目後重新安裝。 |
 | `host_write_pdf` 要求 Chrome | 這個工具需要已安裝的 Chrome／Chromium，程式不會自動下載瀏覽器。 |
 
@@ -152,8 +124,7 @@ sh Install.command --interactive
 
 ## 9. 不想用了怎麼停用？
 
-到 ChatGPT 的 MCP 伺服器清單，把這個項目停用或移除。
-本專案沒有另建開機常駐服務；正在執行的代理可從用戶端停止。
+到 ChatGPT 外掛程式中斷開連線。若已選擇登入自啟，依[通道教學](CHATGPT.md#5-macos-登入後自動啟動)停止並移除該登入項目；不要刪除其他不相關的背景服務。
 
 先保留工作資料和 `exports` 裡的產出。確認不再需要之後，再自行清理程式資料夾。
 刪除 MCP 項目不會自動刪除你的文件。
@@ -180,7 +151,8 @@ sh Install.command --interactive
 ./Install.command --workspace "$PWD/workspace" --state "$PWD/.local/state" --mode documents --no-register
 ```
 
-設定檔預設遵循現有的 `CODEX_HOME`；未設定時使用 `~/.codex/config.toml`。
+僅在另選 `--register-local-client`（或明確傳入 `--client-config`）時登錄本機 STDIO 用戶端。這不是一般 ChatGPT 通道連線。
+此選用設定遵循 `CODEX_HOME`；未設定時使用 `~/.codex/config.toml`。
 可以用 `--client-config /完整路徑/config.toml` 指定其他設定檔。一般使用者不必另外設定這個選項。
 
 多機 SSH、網頁版 HTTPS、OAuth 與 tunnel 的進階內容，請看[連線說明（English）](https://github.com/arumwu/local-workspace-mcp/blob/main/docs/CONNECT.md)。
@@ -191,6 +163,6 @@ sh Install.command --interactive
 - 這是開源工具，不是 OpenAI 或 Desktop Commander 官方產品，也不會增加 ChatGPT 額度。
 - 完整模式能執行目前使用者有權限做的事，資料夾設定不是安全隔離。
 - 本機程式不代表資料完全不離開電腦；傳給 AI 的檔案內容仍由你的 AI 供應商處理。
-- 安裝、工具與文件測試已通過；真正的 ChatGPT 對話操作與兩台實體 Mac 的完整驗收仍未完成。
+- 一般 ChatGPT 網頁對話的 Python 真實呼叫已通過；本機 App、實體多機與所有文件流程的完整驗收仍未完成。
 
 [完整功能對照（English）](https://github.com/arumwu/local-workspace-mcp/blob/main/docs/FEATURES.md) · [驗證紀錄（English）](https://github.com/arumwu/local-workspace-mcp/blob/main/docs/VALIDATION.md)

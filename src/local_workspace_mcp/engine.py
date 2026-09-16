@@ -81,7 +81,16 @@ class HostEngine:
         @mcp._mcp_server.list_tools()
         async def list_tools():
             local = await mcp.list_tools()
-            return local + [tool.model_copy(update={"name": name}) for name, tool in self.tools.items()]
+            forwarded = []
+            for name, tool in self.tools.items():
+                # This bridge exposes tools, not the upstream UI resources.
+                # Advertising those templates makes ChatGPT fetch missing resources.
+                meta = {
+                    key: value for key, value in (tool.meta or {}).items()
+                    if key not in ("ui", "ui/resourceUri", "openai/outputTemplate", "openai/widgetAccessible")
+                }
+                forwarded.append(tool.model_copy(update={"name": name, "meta": meta or None}))
+            return local + forwarded
 
         @mcp._mcp_server.call_tool(validate_input=False)
         async def call_tool(name, arguments):

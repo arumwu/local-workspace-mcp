@@ -1,7 +1,8 @@
 # Local Workspace MCP
 
-Self-hosted local file, terminal, document, and named-device tools for MCP clients.
-**Early alpha: protocol tests pass; actual ChatGPT desktop/web acceptance is still pending.**
+Local files, terminal, documents and Python for **ordinary ChatGPT conversations**, through a private MCP tunnel.
+**Early alpha: ordinary ChatGPT web Python calls verified; native ChatGPT App acceptance pending.**
+Start with the [ChatGPT connection guide](CHATGPT.en.md) and the [current source ZIP](https://github.com/arumwu/local-workspace-mcp/archive/refs/heads/main.zip).
 This does not unlock ChatGPT Work, add AI credits, or guarantee that every ChatGPT mode supports local MCP.
 
 [繁體中文首頁](../README.md) · [中文安裝教學](README.zh-TW.md) · [Connections](CONNECT.md) · [Feature coverage](FEATURES.md) · [Validation](VALIDATION.md) · [Security](../SECURITY.md)
@@ -36,21 +37,15 @@ cd local-workspace-mcp
 
 Choose existing storage appropriate to your computer. Keep private state outside the workspace.
 Use `--mode documents` for isolated document work, or `--skip-worker` when Docker is not needed.
-The installer installs checkout-local dependencies, builds the worker, and **automatically registers the
-launcher in the documented shared ChatGPT desktop/Codex `config.toml`**. Existing configuration is backed
-up before writing; other settings/comments are preserved. Reinstalling reuses an existing entry, including
-custom names, arguments or disabled status. A conflicting server name is refused without overwriting it.
-Use `--no-register` to install without client changes, or `--client-config /path/config.toml` for an explicit
-configuration location. Otherwise it honors `CODEX_HOME`, falling back to `~/.codex/config.toml`.
-Double-click `Install.command` for a guided setup; it asks for storage folders and explicit full-mode access.
-This is a source installer, **not a signed macOS app/pkg**. Missing prerequisites are reported, not auto-installed.
+The installer installs checkout-local dependencies and builds the worker. By default it does **not** change
+Codex/local STDIO client settings. Connect the generated `private-state/launch.sh` using the
+[official private tunnel workflow](CHATGPT.en.md), then verify a real ordinary ChatGPT conversation.
+Double-click `Install.command` for guided local setup. Prerequisites and account setup remain necessary.
 
-After installation, reload MCP servers in ChatGPT desktop or start a new task. The installer does not
-restart an active app. The generated `client-registration.json` records the server name and backup path.
-For other clients (or `--no-register`), add `private-state/launch.sh` as a STDIO command. `mcp-server.json`
-is a configuration fragment, not a replacement for existing settings.
-No listening port, public URL, or API key is required for this local transport.
-ChatGPT web cannot directly contact `127.0.0.1`; see [connection options and account limits](CONNECT.md).
+Optional `--register-local-client` enables the older local STDIO registration, with backups and preservation
+of existing names/disabled settings. Explicit `--client-config` also opts in unless `--no-register` is given.
+This optional compatibility path is not the primary ChatGPT chat setup. Historical v0.1.1-alpha.1 archives
+lack the new ChatGPT discovery fix; use current source. macOS named login startup is documented in the guide.
 
 ## Useful requests
 

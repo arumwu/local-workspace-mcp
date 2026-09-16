@@ -2,14 +2,14 @@
 
 **繁體中文** · [English](docs/README.en.md)
 
-讓支援本機 MCP 的 ChatGPT 桌面版，使用你電腦上的檔案、文件處理與終端工具。
-MCP 可以理解成「AI 呼叫你電腦工具的連接方式」。程式由你自己執行，沒有我們代管的雲端服務。
+讓**一般 ChatGPT 對話**使用你電腦上的檔案、文件處理、Python 與終端工具。
+透過 OpenAI 官方私人 MCP 通道連線，本機工具由你自己執行，不需要我們代管的伺服器。
 
-**[下載安裝包](https://github.com/arumwu/local-workspace-mcp/releases/tag/v0.1.1-alpha.1)** · **[第一次使用：中文安裝教學](docs/README.zh-TW.md)**
+**[下載最新版原始碼](https://github.com/arumwu/local-workspace-mcp/archive/refs/heads/main.zip)** · **[開始使用：一般 ChatGPT 連線教學](docs/CHATGPT.md)**
 
-**支援 macOS 與 Linux。原生 Windows 目前無法執行（程式使用 Unix 專用 API），尚未驗證。**
-
-目前是 **alpha 測試版**。安裝、工具呼叫與文件處理已通過測試；實際 ChatGPT 對話呼叫及實體多機操作仍待完整驗收。
+**實測：一般 ChatGPT 網頁對話已成功呼叫 Python，通道重啟後也成功。**
+本機 ChatGPT App 的一般對話仍待獨立驗證。不能把 Codex／Work 的工具設定當作一般對話已接通。
+目前是 alpha；macOS、Linux 可安裝，原生 Windows 尚不支援。
 
 ## 可以做什麼？
 
@@ -23,18 +23,16 @@ MCP 可以理解成「AI 呼叫你電腦工具的連接方式」。程式由你�
 
 ## 怎麼安裝？
 
-以下適用於 **Mac 上支援「標準輸入／輸出（STDIO）」MCP 的 ChatGPT 桌面版**。
-STDIO 表示 ChatGPT 直接啟動本機程式，這個方式不需要公開網址或另外租主機。
+1. 下載上方最新版原始碼，放到準備長期保留的位置。
+2. 準備 Python、uv 等[必備工具](docs/README.zh-TW.md)，文件工作還需要運作中的 Docker。
+3. 執行 `Install.command`，明確選擇完整模式或文件模式。
+4. 依[一般 ChatGPT 教學](docs/CHATGPT.md)建立官方私人通道與受限制的 runtime key。
+5. 在 ChatGPT 的「外掛程式」新增通道，於新的普通「對話」呼叫 `run_python` 驗證。
+6. Mac 可安裝有名稱的登入啟動 App，讓通道在登入後自動恢復。
 
-1. 到[下載頁](https://github.com/arumwu/local-workspace-mcp/releases/tag/v0.1.1-alpha.1)，下載 `local-workspace-mcp-v0.1.1-alpha.1.zip`。
-2. 解壓縮，把整個資料夾放到打算長期保留的位置。
-3. 依[安裝教學](docs/README.zh-TW.md)準備 Python、uv 等必備工具；需要文件處理時，先開啟 Docker Desktop。
-4. 雙擊資料夾裡的 `Install.command`，依提示選擇工作資料夾與模式。
-5. 安裝器會**自動加入 ChatGPT／Codex 的 MCP 設定**，先備份，並保留其他既有設定。
-6. 在 ChatGPT 重新載入 MCP 伺服器或開啟新工作，確認伺服器已連線。
-
-這是包含安裝腳本的原始碼包，還不是把所有必備工具都包好的 `.app` 或 `.pkg`。
-如果安裝器提示缺少工具，先補裝，再重跑即可；不會默默替你安裝全域軟體。
+新版安裝器預設不修改 Codex／本機 STDIO 設定。只安裝本機程式，還不等於已接上 ChatGPT。
+舊版 `v0.1.1-alpha.1` ZIP 不含這次通道相容性修正，請使用上方最新版原始碼。
+這仍是需準備工具與帳戶設定的原始碼安裝，不是全部預先包好的簽章安裝包。
 
 ## 兩種模式怎麼選？
 
@@ -57,14 +55,15 @@ AI 實際讀取的檔案內容仍會傳給你使用的 AI 供應商；「在本�
 
 ## 常見問題
 
-**一定要填 MCP 的名稱、指令與環境變數嗎？**
-正常安裝會自動處理。若先前已自行設定相同啟動器，會沿用原有項目，不重複新增；也不會擅自把停用項目打開。
+**為什麼設定裡有 MCP，普通對話卻找不到？**
+本機 STDIO 設定與 ChatGPT 帳戶的外掛連線不同。請完成[通道連線與真實對話測試](docs/CHATGPT.md)。
 
-**ChatGPT 網頁版也可以直接用嗎？**
-網頁版不能直接使用你電腦的 `127.0.0.1`。需要另外設定官方 tunnel 或自己的 HTTPS 入口；tunnel 就是讓雲端透過通道連到本機。這不包含在一般桌面安裝流程內。
+**一定要使用 Codex 或 Work 嗎？**
+不需要。主要目標是一般 ChatGPT 對話。其他相容 MCP 用戶端仍可選擇 STDIO。
 
-**只有下載就能使用嗎？**
-還要準備必備工具並執行安裝腳本。第一次請照[中文安裝教學](docs/README.zh-TW.md)操作。
+**金鑰、Docker 和常駐程序要留著嗎？**
+通道需要你自己的受限制金鑰與常駐程序；`run_python` 需要 Docker。
+測試容器與暫存可清理，正式程式、金鑰與產出不能當作暫存刪掉。
 
 **程式資料夾可以裝好後移走嗎？**
 先不要。啟動器記住了安裝路徑；移走後需要重新設定。一般產出放在你選擇的工作資料夾下的 `exports`。

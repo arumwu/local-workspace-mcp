@@ -51,6 +51,11 @@ async def test_real_stdio_engine_and_devices(tmp_path):
             await session.initialize()
             tools = (await session.list_tools()).tools
             assert len([t for t in tools if t.name.startswith("host_")]) == 25
+            for tool in tools:
+                if tool.name.startswith("host_"):
+                    meta = tool.meta or {}
+                    unsupported = {"ui", "ui/resourceUri", "openai/outputTemplate", "openai/widgetAccessible"}
+                    assert not unsupported & meta.keys()
 
             async def call(name, **args):
                 result = await session.call_tool(name, args)

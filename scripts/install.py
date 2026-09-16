@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install this checkout and register its server with ChatGPT desktop/Codex."""
+"""Install local tools for ordinary ChatGPT conversations via a private MCP tunnel."""
 
 import argparse
 import json
@@ -15,13 +15,20 @@ p.add_argument("--workspace", type=Path)
 p.add_argument("--state", type=Path)
 p.add_argument("--mode", choices=["documents", "full"], default="documents")
 p.add_argument("--skip-worker", action="store_true", help="Skip Docker document support")
-p.add_argument("--no-register", action="store_true", help="Install only; do not register with ChatGPT/Codex")
+registration_options = p.add_mutually_exclusive_group()
+registration_options.add_argument(
+    "--register-local-client", action="store_true",
+    help="Optional STDIO client registration (not ChatGPT chat)"
+)
+registration_options.add_argument(
+    "--no-register", action="store_true", help="Install only; this is now the default"
+)
 p.add_argument("--client-config", type=Path, help="Override the documented shared config.toml location")
 p.add_argument("--server-name", default="local-workspace", help="Name used for a new client entry")
 p.add_argument("--interactive", action="store_true", help="Guided installation for double-click launch")
 a = p.parse_args()
 if a.interactive:
-    print("Local Workspace MCP：安裝本機工具並自動加入 ChatGPT/Codex；既有設定會先備份。")
+    print("Local Workspace MCP：安裝本機工具；完成後依 docs/CHATGPT.md 接上一般 ChatGPT 對話。")
     if a.workspace is None:
         a.workspace = Path(input(f"工作資料夾 [{repo / 'workspace'}]: ").strip() or str(repo / "workspace"))
     if a.state is None:
@@ -92,7 +99,7 @@ fragment.write_text(
     json.dumps({"mcpServers": {"local-workspace": {"command": str(launch), "args": []}}}, indent=2) + "\n"
 )
 fragment.chmod(0o600)
-if not a.no_register:
+if a.register_local_client or (a.client_config and not a.no_register):
     registration = [
         str(repo / ".venv/bin/python"),
         "-m",
@@ -113,3 +120,5 @@ print(
     if a.mode == "full"
     else "Document mode runs Python inside Docker with read-only inputs."
 )
+
+print("Next: docs/CHATGPT.md — connect a private tunnel in ChatGPT Plugins, then test in a new conversation.")
