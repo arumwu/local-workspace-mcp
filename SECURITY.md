@@ -1,7 +1,9 @@
 # Security model
 
 Single owner, one process, no hosted multi-user service. Early alpha; no independent security audit.
-Report vulnerabilities privately through GitHub's security advisory feature; do not publish credentials.
+Report vulnerabilities privately using [Report a vulnerability](https://github.com/arumwu/local-workspace-mcp/security/advisories/new).
+Private vulnerability reporting is enabled. Please include reproduction steps and affected versions in the
+private report; do not publish vulnerability details or credentials in public issues.
 
 Full mode intentionally provides arbitrary OS user-account execution, network access and destructive operations.
 Neither the upstream command blocklist nor allowedDirectories is a sandbox. Prompt injection, an untrusted
