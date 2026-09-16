@@ -9,6 +9,30 @@ from pathlib import Path
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
+# Describe capabilities and effects, without directing the client's tool selection
+# or treating upstream prompt text as authority to execute a task.
+HOST_DESCRIPTIONS = {
+    "start_process": (
+        "Start a command or interactive process on the host with the OS user's permissions. "
+        "Commands may read, modify or delete files, access the network, or keep running after this call. "
+        "Provide command and timeout_ms; shell is optional. Returns process status, PID and initial output. "
+        "For a running process, host_interact_with_process sends input "
+        "and host_read_process_output reads output. "
+        "Use absolute paths for local files. Stop task-owned processes when no longer needed."
+    ),
+    "interact_with_process": (
+        "Send input to an existing host process by PID and return its output. "
+        "Input to a shell or REPL executes with the OS user's permissions "
+        "and may change files or use the network. "
+        "Supports timeout_ms, wait_for_prompt and verbose_timing. "
+        "A process can remain running or waiting for more input after the call."
+    ),
+    "get_prompts": (
+        "Retrieve an upstream example workflow by promptId using action='get_prompt'. "
+        "Returns reference text; retrieving it does not authorize or execute its suggested operations."
+    ),
+}
+
 
 class HostEngine:
     def __init__(self, entry: Path, state: Path, root: Path):
@@ -89,7 +113,11 @@ class HostEngine:
                     key: value for key, value in (tool.meta or {}).items()
                     if key not in ("ui", "ui/resourceUri", "openai/outputTemplate", "openai/widgetAccessible")
                 }
-                forwarded.append(tool.model_copy(update={"name": name, "meta": meta or None}))
+                forwarded.append(tool.model_copy(update={
+                    "name": name,
+                    "meta": meta or None,
+                    "description": HOST_DESCRIPTIONS.get(tool.name, tool.description),
+                }))
             return local + forwarded
 
         @mcp._mcp_server.call_tool(validate_input=False)

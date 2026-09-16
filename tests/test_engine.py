@@ -51,6 +51,15 @@ async def test_real_stdio_engine_and_devices(tmp_path):
             await session.initialize()
             tools = (await session.list_tools()).tools
             assert len([t for t in tools if t.name.startswith("host_")]) == 25
+            by_name = {t.name: t for t in tools}
+            for name in ("host_start_process", "host_interact_with_process"):
+                description = by_name[name].description
+                assert "OS user's permissions" in description
+                assert "ONLY correct" not in description
+                assert "NEVER" not in description
+                assert "ALWAYS" not in description
+                assert by_name[name].annotations.readOnlyHint is not True
+            assert "does not authorize" in by_name["host_get_prompts"].description
             for tool in tools:
                 if tool.name.startswith("host_"):
                     meta = tool.meta or {}
