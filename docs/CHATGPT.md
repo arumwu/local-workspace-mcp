@@ -9,6 +9,9 @@
 2026-09-17 已在一般 ChatGPT 網頁對話成功呼叫 `run_python`，重啟通道後也成功。
 本機 ChatGPT App 的一般對話仍待獨立驗證；不能把網頁成功寫成 App 已驗證。
 
+
+安裝完成後請看[日常使用說明](USAGE.zh-TW.md)：電腦／手機對話、主機保持開機、產出與故障排除。
+
 ## 1. 安裝本機工具
 
 下載 [main 最新原始碼 ZIP](https://github.com/arumwu/local-workspace-mcp/archive/refs/heads/main.zip)，

@@ -7,6 +7,9 @@ This does not unlock ChatGPT Work, add AI credits, or guarantee that every ChatG
 
 [繁體中文首頁](../README.md) · [中文安裝教學](README.zh-TW.md) · [Connections](CONNECT.md) · [Feature coverage](FEATURES.md) · [Validation](VALIDATION.md) · [Security](../SECURITY.md)
 
+
+Already installed? Read the [everyday user guide: computers, phones and host availability](USAGE.en.md).
+
 ## Two explicit modes
 
 | Mode | Access |

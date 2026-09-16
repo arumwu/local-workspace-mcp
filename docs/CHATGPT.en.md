@@ -8,6 +8,9 @@ Registering a STDIO server in a Codex/desktop config is not proof that ordinary 
 On 2026-09-17, real ordinary ChatGPT web conversations called `run_python` successfully, including after
 restarting the tunnel. Native ChatGPT App conversation acceptance remains pending.
 
+
+After setup, see the [everyday user guide](USAGE.en.md) for phones, host availability and output access.
+
 ## Install and connect
 
 1. Download the [current source ZIP](https://github.com/arumwu/local-workspace-mcp/archive/refs/heads/main.zip).
