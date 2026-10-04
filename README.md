@@ -26,6 +26,10 @@
 
 ## 怎麼安裝？
 
+Windows 下載 ZIP 解壓縮後，可雙擊 **`Install-Windows.cmd`** 建立或修復 WSL 文件模式安裝，
+再用 **`Connect-ChatGPT-Windows.cmd`** 與 **`Start-Windows.cmd`** 設定及啟動私人通道。
+首次仍需完成 WSL／Ubuntu 初始化與帳戶授權；詳見 [下載版安裝步驟](docs/WINDOWS-WSL.md#download-extract-double-click)。
+
 Windows 使用者可參考 [WSL2 設定與 Windows 操作入口](docs/WINDOWS-WSL.md)：`Install.cmd` 與 `Connect ChatGPT.cmd` 呼叫既有 WSL2 安裝及連線流程，仍需先準備 Linux 內的專案與工具；這不代表原生 Windows 支援。
 
 1. 下載上方最新版原始碼，放到準備長期保留的位置。

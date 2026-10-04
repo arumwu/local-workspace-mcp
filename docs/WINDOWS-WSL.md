@@ -5,6 +5,59 @@ Keep the repository, Python environment, private state and official Linux
 tunnel-client and tunnel-client-runtime in the Linux filesystem. A dedicated
 document workspace can live under `/mnt/c/Users/YOUR_WINDOWS_USER/Documents/LocalWorkspace`.
 
+## Download, extract, double-click
+
+1. Extract the source ZIP; do not run files inside the ZIP viewer.
+2. Double-click `Install-Windows.cmd`. If WSL/Ubuntu is missing, follow the printed
+   `wsl --install -d Ubuntu` instruction in an Administrator terminal, reboot if
+   Windows requests it, and open Ubuntu once to create its Linux user. Then rerun.
+3. Review the displayed workspace and type `y`. Missing Ubuntu dependencies are
+   installed through apt (sudo may ask for your Linux password); uv is installed
+   in a dedicated Linux virtual environment through pip. Docker access must work
+   for that Linux user. If it does not, the installer stops with instructions;
+   it does not silently change group membership or permissions.
+4. Run `Connect-ChatGPT-Windows.cmd`. The official architecture-matched Linux
+   tunnel-client is downloaded and SHA256-verified when no saved connection exists.
+   Create the tunnel/runtime key in your account and enter them at the prompts.
+5. Run `Start-Windows.cmd`, keep its window open, and finish the ChatGPT plugin
+   connection and real tool test below. Ctrl-C stops that foreground tunnel.
+
+The entry points use Windows PowerShell 5.1 and WSL's Python. They do not require
+Python on Windows. The execution policy override applies only to this process;
+no machine/user execution policy is changed. Keep the extracted folder for these
+shortcuts. Account login, new keys and connector consent remain interactive.
+There is no Windows login-autostart task. Do not start a second copy of a tunnel
+already running as a service or in another terminal.
+
+### Existing installation / update / repair
+
+Rerun `Install-Windows.cmd` from a newer extracted release. It detects `launch.sh`
+in the same Linux user's private state, preserves its workspace, refuses to
+replace full host mode, and installs a content-addressed Linux release copy.
+Existing keys and tunnel profiles are untouched. The prior launcher is restored
+if installation fails; old release directories are retained, not deleted.
+Stop your tunnel before updating and start it again afterward.
+
+Default state is the Linux user's `~/.local/state/local-workspace-mcp`; a new
+workspace defaults to `~/LocalWorkspace` inside Ubuntu. Windows Explorer can open
+it through `\\wsl.localhost\Ubuntu\home\YOUR_LINUX_USER\LocalWorkspace`.
+Outputs are in its `exports` folder. To select a Windows workspace or reuse a
+different distro/user/state, run from PowerShell:
+
+```powershell
+.\Install-Windows.cmd -Distro Ubuntu -LinuxUser YOUR_LINUX_USER -Workspace 'C:\Users\YOU\Documents\LocalWorkspace'
+.\Connect-ChatGPT-Windows.cmd -Distro Ubuntu -LinuxUser YOUR_LINUX_USER
+.\Start-Windows.cmd -Distro Ubuntu -LinuxUser YOUR_LINUX_USER
+# Read-only prerequisite and existing-install inspection:
+powershell -NoProfile -File .\scripts\windows_download.ps1 -Action Check -Distro Ubuntu -LinuxUser YOUR_LINUX_USER
+```
+
+Pass `-State /absolute/linux/private-state` consistently if using a custom state.
+An existing installation owned by root requires `-LinuxUser root`; choosing a
+different Linux user selects that user's separate installation. The installer
+does not migrate credentials between users. To select an existing state whose
+workspace differs from a supplied `-Workspace`, it refuses instead of moving data.
+
 ## Prerequisites
 
 - An installed WSL2 Ubuntu distribution (`wsl.exe --list --verbose`).
@@ -164,6 +217,14 @@ used the document workflow and returned the Python marker with exit code 0.
 After restarting only the tunnel process, a second ordinary ChatGPT Python call
 returned a different marker with exit code 0 as well.
 
-This was an existing-installation check, not a clean-machine installer test.
+The Windows PowerShell 5.1 installer was also exercised against a separate new
+Linux state and a Windows workspace containing spaces. It built the environment
+and Docker image, exposed 14 MCP tools and executed Docker Python. Rerunning it
+preserved a workspace sentinel. The official Linux client download, digest check
+and `--version` invocation succeeded. Unit tests cover launcher parsing, full-mode
+refusal, workspace migration refusal, payload exclusions and failure rollback.
+
+WSL, Python, uv and Docker were already present for that installer test; initial
+WSL provisioning and missing-dependency installation were not tested on a clean PC.
 Native Windows, full host mode, ChatGPT desktop/mobile, Windows reboot/login
 startup, and Docker Desktop WSL integration were not tested.
