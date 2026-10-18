@@ -69,3 +69,27 @@ def test_failed_update_restores_launch_and_preserves_secrets(tmp_path):
 def test_private_state_on_windows_mount_refused():
     with pytest.raises(ValueError, match='Linux filesystem'):
         MODULE['private_state'](Path('/mnt/c/private'))
+
+
+@pytest.mark.parametrize('system,release', [
+    ('Linux', '4.4.0-19041-Microsoft'),
+    ('Darwin', '6.6-microsoft-standard-WSL2'),
+])
+def test_unsupported_environment_stops_before_dependency_checks(tmp_path, monkeypatch, system, release):
+    main = MODULE['main']
+    monkeypatch.setattr(main.__globals__['platform'], 'system', lambda: system)
+    monkeypatch.setattr(main.__globals__['platform'], 'release', lambda: release)
+    checks = []
+    monkeypatch.setitem(main.__globals__, 'ensure_dependencies', lambda: checks.append(True) or [])
+    assert main(['check', '--state', str(tmp_path / 'private')]) == 1
+    assert checks == []
+
+
+def test_wsl2_check_is_read_only(tmp_path, monkeypatch):
+    main = MODULE['main']
+    monkeypatch.setattr(main.__globals__['platform'], 'system', lambda: 'Linux')
+    monkeypatch.setattr(main.__globals__['platform'], 'release', lambda: '6.6-microsoft-standard-WSL2')
+    monkeypatch.setitem(main.__globals__, 'ensure_dependencies', lambda: [])
+    state = tmp_path / 'private'
+    assert main(['check', '--state', str(state)]) == 0
+    assert not state.exists()

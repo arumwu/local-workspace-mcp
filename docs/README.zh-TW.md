@@ -27,10 +27,16 @@ Windows 設定只保存發行版與資料夾選擇，金鑰仍由既有連線精
 解壓縮後，保留整個 `local-workspace-mcp` 資料夾。先移到準備長期保留的位置，再開始安裝。
 不要裝好後只留下 `Install.command`，也不要把整個資料夾當作下載暫存刪掉。
 
+Windows 下載 ZIP 解壓縮後，使用 `Install-Windows.cmd` 安裝或修復 WSL2 文件模式，
+再用 `Connect-ChatGPT-Windows.cmd` 設定私人通道、`Start-Windows.cmd` 日常啟動。
+首次仍需完成 WSL2／Ubuntu 初始化、Docker 使用權限與帳戶授權；
+詳見 [Windows 下載版安裝步驟與驗證限制](WINDOWS-WSL.md#download-extract-double-click)。
+
 ## 3. 安裝前需要準備什麼？
 
 目前仍是測試版原始碼安裝包，需要幾個現成工具。
-安裝器會檢查是否缺少工具；缺少時會停下並說明，不會自行安裝全域軟體。
+macOS／Linux 安裝器會檢查是否缺少工具；缺少時會停下並說明，不會自行安裝全域軟體。
+Windows ZIP 安裝入口會在確認後嘗試補齊 Ubuntu 依賴，詳見上方 Windows 指南。
 
 | 工具 | 用途 | 什麼時候需要 |
 |---|---|---|

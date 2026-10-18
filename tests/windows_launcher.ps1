@@ -5,6 +5,7 @@ $oldPath = $env:PATH
 $oldLocal = $env:LOCALAPPDATA
 $oldLog = $env:LWMCP_TEST_LOG
 $oldExit = $env:LWMCP_TEST_EXIT
+$oldPythonExit = $env:LWMCP_TEST_PYTHON_EXIT
 $launcher = Join-Path $PSScriptRoot '../scripts/windows.ps1'
 function Assert-True($condition, $message) { if (-not $condition) { throw $message } }
 function Invoke-Launcher {
@@ -24,6 +25,7 @@ try {
     New-Item -ItemType Directory -Path $root | Out-Null
     $env:LWMCP_TEST_LOG = Join-Path $root 'argv.txt'
     $env:LWMCP_TEST_EXIT = '0'
+    $env:LWMCP_TEST_PYTHON_EXIT = '0'
     $env:LOCALAPPDATA = Join-Path $root 'settings'
     Add-Type -OutputAssembly (Join-Path $root 'wsl.exe') -OutputType ConsoleApplication -TypeDefinition @'
 using System;
@@ -34,7 +36,14 @@ public class FakeWsl {
         string[] encoded = Array.ConvertAll(args, x => Convert.ToBase64String(Encoding.UTF8.GetBytes(x)));
         File.AppendAllText(Environment.GetEnvironmentVariable("LWMCP_TEST_LOG"), String.Join("|", encoded) + "\n");
         if (args.Length > 0 && args[0] == "--list") { Console.WriteLine("Test Ubuntu"); return 0; }
-        if (Array.IndexOf(args, "wslpath") >= 0) { Console.WriteLine("/mnt/c/workspace with spaces"); return 0; }
+        if (Array.IndexOf(args, "wslpath") >= 0) {
+            Console.WriteLine(args[args.Length - 1].EndsWith("windows_download_wsl.py")
+                ? "/mnt/c/source with spaces/windows_download_wsl.py" : "/mnt/c/workspace with spaces");
+            return 0;
+        }
+        if (Array.IndexOf(args, "python3") >= 0 && Environment.GetEnvironmentVariable("LWMCP_TEST_PYTHON_EXIT") != "0") {
+            return Int32.Parse(Environment.GetEnvironmentVariable("LWMCP_TEST_PYTHON_EXIT"));
+        }
         return Int32.Parse(Environment.GetEnvironmentVariable("LWMCP_TEST_EXIT"));
     }
 }
@@ -76,12 +85,51 @@ public class FakeWsl {
     Invoke-Launcher @('-Action', 'Install', '-State', '~/different-private')
     Assert-True ($script:LauncherExit -ne 0) 'Child failure was reported as success.'
     Assert-True ((Get-Content -LiteralPath $settingsPath -Raw -Encoding UTF8) -eq $saved) 'Failed install overwrote settings.'
+
+    $launcher = Join-Path $PSScriptRoot '../scripts/windows_download.ps1'
+    $env:LWMCP_TEST_EXIT = '0'
+    $privateState = '/home/test/private space ' + $cjk + " ';`$(literal)"
+    Invoke-Launcher @('-Action', 'Check', '-Distro', 'Test Ubuntu', '-LinuxUser', 'test-user', '-State', $privateState, '-Workspace', $workspace)
+    Assert-True ($script:LauncherExit -eq 0) 'Download entry point failed with fake WSL.'
+    $arguments = Last-Arguments
+    Assert-True ($arguments[0] -eq '--distribution' -and $arguments[1] -eq 'Test Ubuntu') 'Download distro was split.'
+    Assert-True ($arguments[2] -eq '--user' -and $arguments[3] -eq 'test-user') 'Linux user was lost.'
+    Assert-True ($arguments[4] -eq '--exec' -and $arguments[5] -eq 'python3') 'Download entry point must bypass the Linux shell.'
+    Assert-True ($arguments[6] -eq '/mnt/c/source with spaces/windows_download_wsl.py') 'Installer path was split.'
+    Assert-True ($arguments[7] -eq 'check') 'Download action was lost.'
+    Assert-True ($arguments[9] -eq '/mnt/c/workspace with spaces') 'Download workspace was not converted.'
+    Assert-True ($arguments[11] -eq $privateState) 'Private state lost Unicode or shell metacharacters.'
+
+    foreach ($action in @('Install', 'Connect', 'Start')) {
+        Invoke-Launcher @('-Action', $action)
+        Assert-True ($script:LauncherExit -eq 0) "Download $action failed with fake WSL."
+        $arguments = Last-Arguments
+        Assert-True ($arguments[1] -eq 'Ubuntu' -and $arguments[2] -eq '--exec') 'Download defaults changed.'
+        Assert-True ($arguments[5] -eq $action.ToLowerInvariant()) 'Download action was not forwarded.'
+    }
+
+    $before = Get-Content -LiteralPath $env:LWMCP_TEST_LOG -Raw
+    Invoke-Launcher @('-Action', 'Check', '-State', '/private/invalid"quote')
+    Assert-True ($script:LauncherExit -ne 0) 'Embedded quote was accepted.'
+    Assert-True ((Get-Content -LiteralPath $env:LWMCP_TEST_LOG -Raw) -eq $before) 'Invalid arguments started WSL.'
+
+    $env:LWMCP_TEST_PYTHON_EXIT = '17'
+    Invoke-Launcher @('-Action', 'Start')
+    Assert-True ($script:LauncherExit -ne 0) 'Failed Python command was reported as success.'
+    Assert-True ((Last-Arguments)[3] -eq 'python3') 'Python failure test did not reach Python.'
+    $env:LWMCP_TEST_PYTHON_EXIT = '0'
+    $env:LWMCP_TEST_EXIT = '17'
+    Invoke-Launcher @('-Action', 'Install')
+    Assert-True ($script:LauncherExit -ne 0) 'Unavailable WSL was reported as success.'
+    Assert-True ((Last-Arguments)[-1] -eq 'true') 'Unavailable WSL reached the installer.'
+    Assert-True ((Get-Content -LiteralPath $settingsPath -Raw -Encoding UTF8) -eq $saved) 'Download entry point changed existing settings.'
     Write-Host 'Windows launcher argv, permission, settings and failure tests passed (WSL is mocked).'
 } finally {
     $env:PATH = $oldPath
     $env:LOCALAPPDATA = $oldLocal
     $env:LWMCP_TEST_LOG = $oldLog
     $env:LWMCP_TEST_EXIT = $oldExit
+    $env:LWMCP_TEST_PYTHON_EXIT = $oldPythonExit
     if (Test-Path -LiteralPath $root) { Remove-Item -LiteralPath $root -Recurse -Force }
 }
 # The final negative test deliberately left a nonzero native LASTEXITCODE.

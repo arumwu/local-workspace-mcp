@@ -26,6 +26,8 @@ The entry points use Windows PowerShell 5.1 and WSL's Python. They do not requir
 Python on Windows. The execution policy override applies only to this process;
 no machine/user execution policy is changed. Keep the extracted folder for these
 shortcuts. Account login, new keys and connector consent remain interactive.
+WSL1 is rejected before dependency checks or installation. Linux commands use
+`wsl.exe --exec`, keeping paths with spaces and shell punctuation as arguments.
 There is no Windows login-autostart task. Do not start a second copy of a tunnel
 already running as a service or in another terminal.
 
@@ -217,7 +219,7 @@ used the document workflow and returned the Python marker with exit code 0.
 After restarting only the tunnel process, a second ordinary ChatGPT Python call
 returned a different marker with exit code 0 as well.
 
-The Windows PowerShell 5.1 installer was also exercised against a separate new
+The contributor reports exercising the Windows PowerShell 5.1 installer against a separate new
 Linux state and a Windows workspace containing spaces. It built the environment
 and Docker image, exposed 14 MCP tools and executed Docker Python. Rerunning it
 preserved a workspace sentinel. The official Linux client download, digest check
@@ -228,3 +230,9 @@ WSL, Python, uv and Docker were already present for that installer test; initial
 WSL provisioning and missing-dependency installation were not tested on a clean PC.
 Native Windows, full host mode, ChatGPT desktop/mobile, Windows reboot/login
 startup, and Docker Desktop WSL integration were not tested.
+
+The maintenance review also adds Windows CI coverage for the ZIP entry point:
+PowerShell 5.1/7 parsing, all four actions, explicit distro/user selection, paths
+with spaces/Unicode/shell punctuation, and failed WSL/Python commands. WSL is
+replaced with an argument-recording executable in CI; this does not repeat the
+contributor's real Windows/WSL test or establish clean-PC acceptance.

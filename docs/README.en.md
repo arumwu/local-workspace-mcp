@@ -28,6 +28,9 @@ Docker is required for isolated document jobs. Existing Chrome/Chromium is requi
 no browser is downloaded automatically.
 
 For Windows, see the [WSL2 document-mode guide and validation limits](WINDOWS-WSL.md).
+After extracting the source ZIP, use `Install-Windows.cmd` to install or repair document mode,
+`Connect-ChatGPT-Windows.cmd` to configure the private tunnel, and `Start-Windows.cmd` for daily use.
+WSL2/Ubuntu initialization, Docker access and account consent remain prerequisites or interactive steps.
 
 **Native Windows is not currently supported or validated.** The code relies on POSIX-only APIs such as
 `fcntl`, `os.getuid`, `os.O_NOFOLLOW` and `dir_fd`, and there is no native Windows server or installer. The experimental `.cmd` launchers target WSL2;

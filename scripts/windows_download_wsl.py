@@ -199,7 +199,7 @@ def main(argv=None):
     parser.add_argument('--workspace', type=Path)
     args = parser.parse_args(argv)
     try:
-        if 'microsoft' not in platform.release().lower():
+        if platform.system() != 'Linux' or 'wsl2' not in platform.release().lower():
             raise ValueError('This entry point requires WSL2. Use the Linux/macOS installer elsewhere.')
         state = private_state(args.state)
         if args.action == 'check':
