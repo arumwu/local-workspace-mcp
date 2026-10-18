@@ -11,7 +11,7 @@ jobs:
       - name: Parse Windows PowerShell scripts
         shell: powershell
         run: |
-          foreach ($path in @('scripts/windows.ps1', 'tests/windows_launcher.ps1')) {
+          foreach ($path in @('scripts/windows.ps1', 'scripts/windows_download.ps1', 'tests/windows_launcher.ps1')) {
             $tokens = $null
             $errors = $null
             [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $PWD $path), [ref]$tokens, [ref]$errors) | Out-Null
@@ -23,7 +23,9 @@ jobs:
       - name: Parse launcher with PowerShell 7
         shell: pwsh
         run: |
-          $tokens = $null
-          $errors = $null
-          [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $PWD 'scripts/windows.ps1'), [ref]$tokens, [ref]$errors) | Out-Null
-          if ($errors.Count) { throw ($errors | Out-String) }
+          foreach ($path in @('scripts/windows.ps1', 'scripts/windows_download.ps1')) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $PWD $path), [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count) { throw ($errors | Out-String) }
+          }

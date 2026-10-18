@@ -1,6 +1,24 @@
-# Validation record — updated 2026-09-17
+# Validation record — updated 2026-10-19
 
 Release status: **alpha**. Ordinary ChatGPT web Python calls verified; native App acceptance incomplete.
+
+## Windows ZIP installer review — 2026-10-19
+
+- ZIP entry points install/repair document mode in WSL2, then configure and start the official runtime.
+- Regression tests demonstrated that WSL1 was previously accepted; it is now rejected before dependency checks.
+- Commands bypass the Linux shell with `--exec`; Windows CI exercises argument preservation and failure handling
+  using a fake WSL executable, including the new ZIP wrapper. This is not an actual Windows/WSL installation.
+- On an isolated macOS source checkout: `82 passed` with `LWMCP_DOCKER_TESTS=1`, including full-engine stdio,
+  Docker document/isolation checks, YAML front matter/CLI and Sharp image round trips. Two existing dependency
+  deprecation warnings remain. The local Docker checks reused the existing, unchanged worker image.
+- Ruff and `git diff --check` passed. Current npm and Python dependency scans report no known vulnerabilities
+  (the project's editable Python package is skipped). Desktop Commander remains pinned at 0.2.50;
+  [third-party notices](../THIRD_PARTY_NOTICES.md) document the narrow dependency overrides.
+- The contributor's separate real Windows/WSL checks and their limits are recorded in [WINDOWS-WSL.md](WINDOWS-WSL.md).
+  This maintenance review did not repeat those tests, provision a clean PC, or validate a new ChatGPT round trip.
+- The owner's installed Mac service, tunnel, credentials and original source checkout were not updated or restarted.
+
+The dated records below describe their original test environments and versions.
 
 ## Ordinary ChatGPT chat — 2026-09-17
 

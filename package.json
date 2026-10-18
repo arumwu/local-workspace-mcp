@@ -8,7 +8,10 @@
     "@wonderwhy-er/desktop-commander": "0.2.50"
   },
   "overrides": {
-    "sharp": "0.35.4",
+    "sharp": "0.35.5",
+    "@modelcontextprotocol/sdk": "1.31.0",
+    "proxy-addr": "2.0.8",
+    "argparse": "2.0.1",
     "exceljs": {
       "uuid": "11.1.1"
     },

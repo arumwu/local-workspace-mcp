@@ -38,3 +38,31 @@ assert.equal(typeof require('md-to-pdf').mdToPdf, 'function');
 })().catch(error => { console.error(error); process.exitCode = 1; });
 """
     subprocess.run(["node", "-e", script, str(tmp_path)], cwd=ROOT, check=True, timeout=15)
+
+
+def test_image_and_yaml_compatibility_after_dependency_updates():
+    script = r"""
+const assert = require('node:assert/strict');
+const {createRequire} = require('node:module');
+const {execFileSync} = require('node:child_process');
+const sharp = require('sharp');
+const matter = require('gray-matter');
+const yamlRequire = createRequire(require.resolve('js-yaml'));
+assert.equal(yamlRequire('argparse/package.json').version, '2.0.1');
+assert.throws(() => yamlRequire.resolve('sprintf-js'), {code: 'MODULE_NOT_FOUND'});
+const yaml = 'title: "測試"\ncount: 2\n';
+const parsed = matter(`---\n${yaml}---\n# Content\n`);
+assert.deepEqual(parsed.data, {title: '測試', count: 2});
+assert.deepEqual(matter(matter.stringify('# Content\n', parsed.data)).data, parsed.data);
+const cli = require.resolve('js-yaml/bin/js-yaml.js');
+const result = execFileSync(process.execPath, [cli], {input: yaml, encoding: 'utf8'});
+assert.deepEqual(JSON.parse(result), parsed.data);
+(async () => {
+  const image = await sharp({create: {width: 2, height: 3, channels: 4, background: '#123456'}})
+    .png().toBuffer();
+  const metadata = await sharp(image).metadata();
+  assert.equal(metadata.width, 2);
+  assert.equal(metadata.height, 3);
+})().catch(error => { console.error(error); process.exitCode = 1; });
+"""
+    subprocess.run(["node", "-e", script], cwd=ROOT, check=True, timeout=15)
