@@ -109,7 +109,15 @@ public class FakeWsl {
     }
 
     $before = Get-Content -LiteralPath $env:LWMCP_TEST_LOG -Raw
-    Invoke-Launcher @('-Action', 'Check', '-State', '/private/invalid"quote')
+    # Native PowerShell -File marshalling strips literal quotes before the wrapper sees them.
+    # Construct the invalid value inside a child script so the rejection is actually exercised.
+    $downloadLauncher = $launcher
+    $probeSource = "& '" + $launcher.Replace("'", "''") + "' -Action Check -State ([string][char]34)" +
+        [Environment]::NewLine + 'exit $LASTEXITCODE'
+    $launcher = Join-Path $root 'invalid-quote.ps1'
+    [System.IO.File]::WriteAllText($launcher, $probeSource, [Text.Encoding]::ASCII)
+    Invoke-Launcher @()
+    $launcher = $downloadLauncher
     Assert-True ($script:LauncherExit -ne 0) 'Embedded quote was accepted.'
     Assert-True ((Get-Content -LiteralPath $env:LWMCP_TEST_LOG -Raw) -eq $before) 'Invalid arguments started WSL.'
 
